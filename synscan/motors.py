@@ -102,6 +102,8 @@ class motors(comm):
             )
         super(motors, self).__init__(udp_ip,udp_port,serial_dev)
         self._init()
+        #Send init done
+        self._send_cmd('F',3)  # Initialize
         self.update_current_values()
 
 
@@ -127,7 +129,7 @@ class motors(comm):
         return T1preset
 
 
-    def get_values(self,parameterDict,initDone=True):
+    def get_values(self,parameterDict):
         '''
         Send all cmd in the parameterDict for both axis and return
         a dictionary with the values.
@@ -144,9 +146,6 @@ class motors(comm):
                 except NameError as error:
                     logging.warning(error)
                     raise(NameError('getValuesError'))
-            #Send init done
-            if initDone:
-                self._send_cmd('F',axis)  # Initialize
         return params
 
     def get_parameters(self):
@@ -171,7 +170,7 @@ class motors(comm):
                         'HighSpeedRatio':'g',       # Inquire High Speed Ratio
                         }
         try:
-            params=self.get_values(parameterDict, initDone=True)
+            params=self.get_values(parameterDict)
         except NameError as error:
             logging.warning(error)
             raise(NameError('getParametersError'))
@@ -507,7 +506,7 @@ class motors(comm):
                         }
         retrySec = 2
         try:
-          params=self.get_values(parameterDict, initDone=False)
+          params=self.get_values(parameterDict)
 
           for parameter in ['GotoTarget','Position']:
               for axis in range(1,3):
