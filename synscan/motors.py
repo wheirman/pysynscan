@@ -393,7 +393,7 @@ class motors(comm):
               else:
                   self.axis_set_speed(axis,speed)
                   return 
-          else:
+          elif speed != 0:
               self.axis_set_motion_mode(axis,True,(speed <0),False)
               self.axis_set_speed(axis,speed)
               self.axis_start_motion(axis)
