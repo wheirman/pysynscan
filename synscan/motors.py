@@ -460,6 +460,9 @@ class motors(comm):
         response=self._send_cmd('O',1,value,ndigits=1)  # SetSwitch
         return response
 
+    def get_pos(self):
+        return (self.axis_get_pos(1), self.axis_get_pos(2))
+
     def set_pos(self,alpha,beta):
         ''' Synchronize actual position with alpha and beta'''
         if self.params[1]['countsPerRevolution']:
